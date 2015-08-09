@@ -1,0 +1,26 @@
+{
+    "name": "mapasculturais/sdk",
+    "description": "Mapas Culturais SDK",
+    "keywords": ["mapas culturais"],
+    "license": "AGPLv3",
+    "authors": [
+        {
+            "name": "Leandro Monteiro Dal Bó",
+            "email": "leandro.db@gmail.com"
+        },
+        {
+            "name": "Rafael Chaves Freitas",
+            "email": "rafael.chaves.freitas@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload": {
+        "psr-0": {"MapasSDK": "src/"}
+    },
+    "require": {
+        "curl/curl": "1.2.0",
+        "firebase/php-jwt": "^2.2"
+    }
+}
