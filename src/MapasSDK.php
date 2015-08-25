@@ -29,9 +29,8 @@ class MapasSDK {
         );
 
 
-        $data['isAjax'] = true;
-        
         $curl->setHeader('authorization', $jwt);
+        $curl->setHeader('MapasSDK-REQUEST', 'true');
 
         foreach ($headers as $k => $v) {
             $curl->setHeader($k, $v);
