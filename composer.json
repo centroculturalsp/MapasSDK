@@ -3,6 +3,7 @@
     "description": "Mapas Culturais SDK",
     "keywords": ["mapas culturais"],
     "license": "AGPLv3",
+    "type": "library",
     "authors": [
         {
             "name": "Leandro Monteiro Dal Bó",
@@ -16,11 +17,13 @@
     "require": {
         "php": ">=5.4"
     },
-    "autoload": {
-        "psr-0": {"MapasSDK": "src/"}
-    },
     "require": {
         "curl/curl": "1.2.0",
         "firebase/php-jwt": "^2.2"
+    },
+    "autoload": {
+        "psr-0": {
+          "MapasSDK": "src/"
+        }
     }
 }
