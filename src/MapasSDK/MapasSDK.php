@@ -5,12 +5,26 @@ namespace MapasSDK;
 use Curl\Curl;
 use JWT;
 
+
+function EQ($value) { 
+    return 'EQ(' . $value . ')';
+}
+
+function IN(array $values){
+    return "IN(" . implode(',', $values) . ')';
+}
+
+// @TODO: implementar as funções dos outros operadores
+
 class MapasSDK {
 
     protected $_apiUrl;
     protected $_pubKey;
     protected $_priKey;
     protected $_algo;
+    
+    public $debugRequest = false;
+    public $debugResponse = false;
     
     /**
      * As requisições por GET que "casarem" com os padrões definidos nessa propriedade serão cacheadas
@@ -66,7 +80,9 @@ class MapasSDK {
      */
     public function apiRequest($method, $targetPath, array $data = [], array $headers = [], array $curlOptions = []) {
         $curl = new Curl;
-
+        
+        $this->_debugRequest($method, $targetPath, $data, $headers, $curlOptions);
+        
         foreach ($this->curlOptions as $option => $value) {
             $curl->setOpt($option, $value);
         }
@@ -118,7 +134,36 @@ class MapasSDK {
         }
         $curl->data = $data;
         
+        $this->_debugResponse($curl);
+        
         return $curl;
+    }
+    
+    protected function _debugRequest($method, $targetPath, $data, $headers, $curlOptions){
+        if($this->debugRequest){
+            echo "\n------------=======================MapasSDK=========================------------\n" . 
+                    strtoupper($method) . " {$targetPath } \n\n";
+                    
+            $debug = [];
+            
+            if($headers){ $debug['headers'] = $headers; }
+            if($curlOptions){ $debug['curl options'] = $curlOptions; }
+            if($data){ $debug['data'] = $data; }
+           
+            if($debug) {
+                print_r($debug);
+            }
+        }
+    }
+    
+    protected function _debugResponse($curl){
+        if($this->debugResponse){
+            if($this->debug){
+                echo "\n\nCURL OBJECT:\n\n";
+                print_r($curl);
+                echo "\n\n================================================================================\n";
+            }
+        }
     }
 
     /**
@@ -189,50 +234,6 @@ class MapasSDK {
      */
     public function apiDelete($targetPath, array $data = [], array $headers = [], array $curlOptions = []) {
         return $this->apiRequest('delete', $targetPath, $data, $headers, $curlOptions);
-    }
-
-    /**
-     * Retorna a descrição da entidade
-     * 
-     * @param string $type Tipo da entidade (agent|space|project|event|etc)
-     * 
-     * @return object
-     */
-    public function getEntityDescription($type) {
-        $curl = $this->apiGet("api/{$type}/describe");
-        
-        return $curl->response;
-    }
-
-    /**
-     * Retorna os tipos disponíveis para a entidade
-     * 
-     * @param string $type Tipo da entidade (agent|space|project|event|etc)
-     * 
-     * @return object
-     */
-    public function getEntityTypes($type) {
-        $curl = $this->apiGet("api/{$type}/getTypes");
-        
-        return $curl->response;
-    }
-
-    /**
-     * Retorna os campos selecionados da entidade com o id fornecido
-     * 
-     * @param string $type Tipo da entidade (agent|space|project|event|etc)
-     * @param int $id id da entidade
-     * @param string $fields campos que devem ser retornados
-     * 
-     * @return object
-     */
-    public function findEntity($type, $id, $fields) {
-        $curl = $this->apiGet("api/{$type}/findOne", [
-                    'id' => "EQ({$id})",
-                    '@select' => $fields
-        ]);
-                    
-        return $curl->response;
     }
 
     /**
@@ -311,6 +312,100 @@ class MapasSDK {
         $curl = $this->apiDelete("{$type}/single/{$id}");
         
         return true;
+    }
+
+    /**
+     * Retorna a descrição da entidade
+     * 
+     * @param string $type Tipo da entidade (agent|space|project|event|etc)
+     * 
+     * @return object
+     */
+    public function getEntityDescription($type) {
+        $curl = $this->apiGet("api/{$type}/describe");
+        
+        return $curl->response;
+    }
+
+    /**
+     * Retorna os tipos disponíveis para a entidade
+     * 
+     * @param string $type Tipo da entidade (agent|space|project|event|etc)
+     * 
+     * @return object
+     */
+    public function getEntityTypes($type) {
+        $curl = $this->apiGet("api/{$type}/getTypes");
+        
+        return $curl->response;
+    }
+    
+    /**
+     * Retorna os ids das entidades filhas
+     * 
+     * @param int $type Tipo da entidade (agent|space|project)
+     * @param int $id Id da entidade
+     * @param boolean $$include_parent_project_id incluir o id do projeto pai? (default false)
+     * 
+     * @return int[]
+     */
+   
+    public function getChildrenIds($type, $id, $include_parent_project_id = false) {
+        $curl = $this->apiGet("api/{$type}/getChildrenIds/{$id}");
+        
+        $response = $curl->response;
+        
+        if($include_parent_project_id){
+            $response[] = $id;
+        }
+        
+        return $response;
+    }
+    
+    /**
+     * Retorna os campos selecionados da entidade com o id fornecido
+     * 
+     * @param string $type Tipo da entidade (agent|space|project|event|etc)
+     * @param int $id id da entidade
+     * @param string $fields campos que devem ser retornados
+     * 
+     * @return object
+     */
+    public function findEntity($type, $id, $fields) {
+        $curl = $this->apiGet("api/{$type}/findOne", [
+                    'id' => EQ($id),
+                    '@select' => $fields
+        ]);
+                    
+        return $curl->response;
+    }    
+    
+    public function findEntities($type, $fields, $params = []) {
+        
+        $params['@select'] = $fields;
+        
+        $curl = $this->apiGet("api/{$type}/find", $params);
+        
+        return $curl->response;
+    }
+    
+    /**
+     * Retorna os espaços onde ocorrem eventos no período informado
+     * 
+     * @param type $from data inicial dos eventos
+     * @param type $to data final dos eventos
+     * @param type $fields campos que devem ser retornados
+     * @param type $params demais parâmetros para a consulta (ver documentação do método findEntitie para mais detalhes)
+     */
+    public function findSpacesByEvents($from, $to, $fields, $params = []) {
+        
+        $params['@select'] = $fields;
+        $params['@from'] = $from;
+        $params['@to'] = $to;
+        
+        $curl = $this->apiGet('api/space/findByEvents', $params);
+        
+        return $curl->response;
     }
 
 }
