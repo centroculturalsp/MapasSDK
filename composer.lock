@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "79830992d04e87e2fa973f6092865f31",
+    "content-hash": "b2f6266bce15c5c121c748e3afe697f4",
     "packages": [
         {
             "name": "curl/curl",
-            "version": "1.2.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-mod/curl.git",
-                "reference": "abf20039c84291b5399502c9ecff77a1cda3848e"
+                "reference": "96f5bd47bab8d76f1883c257c6659091987ef662"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-mod/curl/zipball/abf20039c84291b5399502c9ecff77a1cda3848e",
-                "reference": "abf20039c84291b5399502c9ecff77a1cda3848e",
+                "url": "https://api.github.com/repos/php-mod/curl/zipball/96f5bd47bab8d76f1883c257c6659091987ef662",
+                "reference": "96f5bd47bab8d76f1883c257c6659091987ef662",
                 "shasum": ""
             },
             "require": {
@@ -25,7 +25,8 @@
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "3.7.*",
+                "squizlabs/php_codesniffer": "~2.1"
             },
             "type": "library",
             "autoload": {
@@ -58,31 +59,30 @@
                 "curl",
                 "dot"
             ],
-            "time": "2014-12-11 16:11:01"
+            "time": "2017-04-03T15:04:35+00:00"
         },
         {
             "name": "firebase/php-jwt",
-            "version": "v2.2.0",
+            "version": "v4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "e0a75bfb6413f22092c99b70f310ccb2cca3efa5"
+                "reference": "dccf163dc8ed7ed6a00afc06c51ee5186a428d35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/e0a75bfb6413f22092c99b70f310ccb2cca3efa5",
-                "reference": "e0a75bfb6413f22092c99b70f310ccb2cca3efa5",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/dccf163dc8ed7ed6a00afc06c51ee5186a428d35",
+                "reference": "dccf163dc8ed7ed6a00afc06c51ee5186a428d35",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2.0"
+                "php": ">=5.3.0"
             },
             "type": "library",
             "autoload": {
-                "classmap": [
-                    "Authentication/",
-                    "Exceptions/"
-                ]
+                "psr-4": {
+                    "Firebase\\JWT\\": "src"
+                }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -102,7 +102,7 @@
             ],
             "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
             "homepage": "https://github.com/firebase/php-jwt",
-            "time": "2015-06-22 23:26:39"
+            "time": "2016-07-18T04:51:16+00:00"
         }
     ],
     "packages-dev": [],

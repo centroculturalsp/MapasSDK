@@ -2,9 +2,10 @@
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 $mapas = new MapasSDK\MapasSDK(
-    'http://mapas.local/', 
-    '7lPnTbPby84S10gA4TDwqVuBACNBEkdF', 
-    'kFDSzQdThMpzG3x4WoVY2GDOaH1fze0H0oBBZmtquvC1sI6R32xJaSYLvZO2sPPL'
+    'http://mapas.local/',
+    'chave publica',
+    'chave privada',
+    'HS256'
 );
 
 //

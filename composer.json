@@ -18,8 +18,8 @@
         "php": ">=5.4"
     },
     "require": {
-        "curl/curl": "1.2.0",
-        "firebase/php-jwt": "^2.2"
+        "curl/curl": "*",
+        "firebase/php-jwt": "*"
     },
     "autoload": {
         "psr-0": {
