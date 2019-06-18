@@ -384,6 +384,9 @@ class MapasSDK {
     }
 
     public function findEntities($type, $fields, $params = []) {
+        if(is_array($fields)){
+            $fields = implode(',', $fields);
+        }
 
         $params['@select'] = $fields;
 
