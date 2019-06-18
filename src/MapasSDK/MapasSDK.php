@@ -414,4 +414,16 @@ class MapasSDK {
         return $curl->response;
     }
 
+    /**
+     * Retorna os termos da taxonomia informada
+     *
+     * @param string $taxonomy_slug
+     * @return array
+     */
+    public function getTaxonomyTerms($taxonomy_slug){
+        $curl = $this->apiGet('/api/term/list/' . $taxonomy_slug);
+
+        return $curl->response;
+    }
+
 }
