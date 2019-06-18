@@ -104,8 +104,11 @@ class MapasSDK {
             $curl->setHeader($k, $v);
         }
 
-        $curl->$method($this->_mapasInstanceUrl . $targetPath, $data);
-
+        if(strtolower($method) === 'patch'){
+            $curl->$method($this->_mapasInstanceUrl . $targetPath, $data, true);
+        } else {
+            $curl->$method($this->_mapasInstanceUrl . $targetPath, $data);
+        }
         $curl->close();
 
         $responseObject = json_decode($curl->response);
