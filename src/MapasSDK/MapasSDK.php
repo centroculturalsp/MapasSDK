@@ -403,7 +403,7 @@ class MapasSDK {
      * @param type $fields campos que devem ser retornados
      * @param type $params demais parâmetros para a consulta (ver documentação do método findEntitie para mais detalhes)
      */
-    public function findSpacesByEvents($from, $to, $fields, $params = []) {
+    public function findSpacesByEvents($from, $to, $fields, array $params = []) {
 
         $params['@select'] = $fields;
         $params['@from'] = $from;
