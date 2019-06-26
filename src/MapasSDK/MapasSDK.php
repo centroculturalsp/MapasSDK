@@ -432,4 +432,44 @@ class MapasSDK {
         return $curl->response;
     }
 
+    /**
+     * Cria um objeto CURLFile
+     *
+     * @param string $filename
+     * @return \CURLFile
+     */
+    function makeCurlFile($filename){
+        $mime = mime_content_type($filename);
+        $info = pathinfo($filename);
+        $name = $info['basename'];
+        $output = new \CURLFile($filename, $mime, $name);
+        return $output;
+    }
+
+    /**
+     * Envia arquivo para a instalação
+     *
+     * @param string $type Tipo da entidade (agent|space|project|event|etc)
+     * @param int $id id da entidade
+     * @param string $filegroup (avatar|header|gallery|etc)
+     * @param string $filename caminho completo para o arquivo a ser enviado
+     * @return object
+     */
+    public function uploadFile($type, $id, $filegroup, $filename){
+        $cfile = $this->makeCurlFile($filename);
+
+        $ch = curl_init("{$this->_mapasInstanceUrl}{$type}/upload/id:{$id}/");
+        
+        $data = array($filegroup => $cfile);
+        curl_setopt($ch, CURLOPT_POST,1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'authorization: ' . $this->getJWT(),
+            'MapasSDK-REQUEST: 1'
+        ));
+
+        return json_decode(curl_exec($ch));
+    }
+
 }
