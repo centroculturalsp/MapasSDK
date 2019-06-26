@@ -61,7 +61,19 @@ class MapasSDK {
         $this->_algo = $algo;
     }
 
-        /**
+    /**
+     * Retorna o JWT para o header 'authorization'
+     *
+     * @return string
+     */
+    protected function getJWT(){
+        return JWT::encode([
+            'tm' => (string) microtime(true),
+            'pk' => $this->_pubKey
+        ], $this->_priKey, $this->_algo);
+    }
+
+    /**
      * Executa um request para a instância do Mapas Culturais
      *
      * @param string $method Método do request (GET|POST|PATCH|PUT|DELETE)
@@ -90,14 +102,8 @@ class MapasSDK {
         foreach ($curlOptions as $option => $value) {
             $curl->setOpt($option, $value);
         }
-
-        $jwt = JWT::encode([
-                    'tm' => (string) microtime(true),
-                    'pk' => $this->_pubKey
-                ], $this->_priKey, $this->_algo     // Algorithm used to sign the token, see https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40#section-3
-        );
         
-        $curl->setHeader('authorization', $jwt);
+        $curl->setHeader('authorization', $this->getJWT());
         $curl->setHeader('MapasSDK-REQUEST', 'true');
 
         foreach ($headers as $k => $v) {
