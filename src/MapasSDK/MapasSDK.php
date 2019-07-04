@@ -248,7 +248,7 @@ class MapasSDK {
     /**
      * Cria uma nova entidade do tipo informado com os dados fornecidos e retorna a entidade criada.
      *
-     * @param string $type Tipo da entidade (agent|space|project|event|etc)
+     * @param string $type Tipo da entidade (agent|space|project|opportunity|event|etc)
      * @param array $data
      *
      * @return object
@@ -273,7 +273,7 @@ class MapasSDK {
      * Para atualizar somente os dados enviados, sem modificar os não enviados, utilizar a função patchEntity.
      *
      *
-     * @param string $type Tipo da entidade (agent|space|project|event|etc)
+     * @param string $type Tipo da entidade (agent|space|project|opportunity|event|etc)
      * @param int $id Id da entidade a ser atualizada
      * @param array $data
      *
@@ -292,7 +292,7 @@ class MapasSDK {
     /**
      * Atualza os dados fornecidos da entidade com o id informado e retorna a entidade modificada.
      *
-     * @param string $type Tipo da entidade (agent|space|project|event|etc)
+     * @param string $type Tipo da entidade (agent|space|project|opportunity|event|etc)
      * @param int $id Id da entidade a ser atualizada
      * @param array $data
      * @return object
@@ -312,7 +312,7 @@ class MapasSDK {
     /**
      * Deleta a entidade com o id informado.
      *
-     * @param string $type Tipo da entidade (agent|space|project|event|etc)
+     * @param string $type Tipo da entidade (agent|space|project|opportunity|event|etc)
      * @param int $id Id da entidade a ser deletada
      *
      * @return boolean true
@@ -326,7 +326,7 @@ class MapasSDK {
     /**
      * Retorna a descrição da entidade
      *
-     * @param string $type Tipo da entidade (agent|space|project|event|etc)
+     * @param string $type Tipo da entidade (agent|space|project|opportunity|event|etc)
      *
      * @return object
      */
@@ -339,7 +339,7 @@ class MapasSDK {
     /**
      * Retorna os tipos disponíveis para a entidade
      *
-     * @param string $type Tipo da entidade (agent|space|project|event|etc)
+     * @param string $type Tipo da entidade (agent|space|project|opportunity|event|etc)
      *
      * @return object
      */
@@ -374,9 +374,9 @@ class MapasSDK {
     /**
      * Retorna os campos selecionados da entidade com o id fornecido
      *
-     * @param string $type Tipo da entidade (agent|space|project|event|etc)
+     * @param string $type Tipo da entidade (agent|space|project|opportunity|event|etc)
      * @param int $id id da entidade
-     * @param string $fields campos que devem ser retornados
+     * @param string|array $fields campos que devem ser retornados
      *
      * @return object
      */
@@ -389,6 +389,14 @@ class MapasSDK {
         return $curl->response;
     }
 
+    /**
+     * Retorna os campos selecionados das entidades do tipo informado
+     *
+     * @param string $type Tipo da entidade (agent|space|project|opportunity|event|etc)
+     * @param string|array $fields campos que devem ser retornados
+     * @param array $params
+     * @return void
+     */
     public function findEntities($type, $fields, $params = []) {
         if(is_array($fields)){
             $fields = implode(',', $fields);
@@ -449,7 +457,7 @@ class MapasSDK {
     /**
      * Envia arquivo para a instalação
      *
-     * @param string $type Tipo da entidade (agent|space|project|event|etc)
+     * @param string $type Tipo da entidade (agent|space|project|opportunity|event|etc)
      * @param int $id id da entidade
      * @param string $filegroup (avatar|header|gallery|etc)
      * @param string $filename caminho completo para o arquivo a ser enviado
