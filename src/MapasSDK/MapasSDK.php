@@ -381,6 +381,9 @@ class MapasSDK {
      * @return object
      */
     public function findEntity($type, $id, $fields) {
+        if(is_array($fields)){
+            $fields = implode(',', $fields);
+        }
         $curl = $this->apiGet("api/{$type}/findOne", [
                     'id' => EQ($id),
                     '@select' => $fields
