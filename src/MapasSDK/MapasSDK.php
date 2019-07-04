@@ -431,6 +431,15 @@ class MapasSDK {
         return $curl->response;
     }
 
+    public function findEventOccurrences($from, $to, array $params = []){
+        $params['@from'] = $from;
+        $params['@to'] = $to;
+
+        $curl = $this->apiGet('api/event/findOccurrences', $params);
+
+        return $curl->response;
+    }
+
     /**
      * Retorna os termos da taxonomia informada
      *
