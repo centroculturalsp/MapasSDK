@@ -110,7 +110,7 @@ class MapasSDK {
             $curl->setHeader($k, $v);
         }
 
-        if(strtolower($method) === 'patch'){
+        if(in_array(strtolower($method), ['patch', 'put', 'delete'])){
             $curl->$method($this->_mapasInstanceUrl . $targetPath, $data, true);
         } else {
             $curl->$method($this->_mapasInstanceUrl . $targetPath, $data);
